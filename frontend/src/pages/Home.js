@@ -39,8 +39,10 @@ const Home = () => {
     return softwareEngineerImg; // Default fallback
   };
 
+  const API = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
-    fetch('http://localhost:5000/api/careers')
+    fetch(`${API}/api/careers`)
       .then(res => res.json())
       .then(data => {
         setCareers(data);

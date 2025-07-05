@@ -17,7 +17,7 @@ export default function CareerQuiz() {
 
   const fetchQuestions = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/quiz-questions');
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/quiz-questions`);
       setQuestions(res.data.questions);
     } catch (err) {
       console.error('Error fetching questions:', err);

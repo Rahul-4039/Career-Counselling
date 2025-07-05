@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { FaSearch } from "react-icons/fa";
 import { jsPDF } from "jspdf";
 import "../styles/CareerDetail.css";
@@ -29,10 +29,12 @@ const CareerCard = ({ career, onGetRoadmap }) => (
 
 export default function CareerPage() {
   const [search, setSearch] = useState("");
+ const [careers, setCareers] = useState([]);
   const [category, setCategory] = useState("All");
   const [selectedCareer, setSelectedCareer] = useState(null);
   const [showPremiumPopup, setShowPremiumPopup] = useState(false);
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user")));
+  const API = process.env.REACT_APP_API_URL;
 
   const handleGetRoadmap = (career) => {
     if (user?.isPremium) {
@@ -154,6 +156,21 @@ export default function CareerPage() {
     (category === "All" || c.category === category) &&
     c.title.toLowerCase().includes(search.toLowerCase())
   );
+
+  useEffect(() => {
+  const fetchCareers = async () => {
+    try {
+      const response = await fetch(`${API}/api/careers`);
+      if (!response.ok) throw new Error("Failed to fetch careers");
+      const data = await response.json();
+      setCareers(data);
+    } catch (error) {
+      console.error("Error fetching careers:", error);
+    }
+  };
+
+  fetchCareers();
+}, [API]);
 
   return (
     <div className="career-page">
