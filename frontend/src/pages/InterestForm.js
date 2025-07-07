@@ -111,10 +111,10 @@ export default function InterestForm() {
       </div>
 
       <div className="buttons">
-        <button className="btn-primary" onClick={handleSuggest} disabled={loading}>
+        <button className="btn-prim" onClick={handleSuggest} disabled={loading}>
           {loading ? 'Generating...' : 'Get Career Suggestions'}
         </button>
-        <button className="btn-secondary" onClick={() => {
+        <button className="btn-second" onClick={() => {
           setSelected([]);
           setShowCareers(false);
           setCareers([]);

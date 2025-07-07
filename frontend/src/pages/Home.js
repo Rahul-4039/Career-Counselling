@@ -52,7 +52,7 @@ const Home = () => {
         console.error('Error fetching careers:', err);
         setLoading(false);
       });
-  }, []);
+  }, [API]);
 
   return (
     <div className="home-container">

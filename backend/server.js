@@ -16,10 +16,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors({
-  origin: 'https://career-counselling-xi.vercel.app',
-  credentials: true
-}));
+app.use(cors());
+
+// {
+//   origin: 'https://career-counselling-xi.vercel.app',
+//   credentials: true
+// }
 
 // Middleware
 app.use(express.json());
@@ -435,6 +437,135 @@ Only return valid JSON. No explanation or markdown.
     res.status(500).json({ error: 'Failed to fetch questions from AI.' });
   }
 });
+
+app.post('/api/compare-courses', async (req, res) => {
+  const { course1, course2 } = req.body;
+
+  if (!course1 || !course2) {
+    return res.status(400).json({ error: "Both course1 and course2 are required" });
+  }
+
+  const prompt = `Compare the following two courses: "${course1}" vs "${course2}".
+Return ONLY a markdown table comparing these two courses on the following parameters:
+- Duration
+- Popular colleges
+- Fees
+- Placement scope
+- Job roles
+- Skills required
+- Entrance exams
+- Industry demand
+
+Format:
+| Parameter | ${course1} | ${course2} |
+|-----------|------------|------------|
+| ...       | ...        | ...        |
+
+Strictly return the markdown table. No explanations or headings or markdown fences like \`\`\`.`;
+
+  try {
+    const response = await axios.post(
+      'https://openrouter.ai/api/v1/chat/completions',
+      {
+        model: 'anthropic/claude-3-haiku',
+        messages: [{ role: 'user', content: prompt }],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        timeout: 30000,
+      }
+    );
+
+    let raw = response.data.choices?.[0]?.message?.content?.trim() || '';
+
+    // Clean up extra markdown or heading text
+    raw = raw
+      .replace(/^```(?:markdown)?/gi, '')
+      .replace(/```$/gi, '')
+      .replace(/^(Here (is|are)[^\n]*\n|Below[^\n]*\n)/i, '')
+      .trim();
+
+    // Log output for debugging
+    console.log('\n--- AI Raw Output Start ---\n');
+    console.log(raw);
+    console.log('\n--- AI Raw Output End ---\n');
+
+    // Check if it's a valid markdown table
+    const hasTableSyntax = raw.includes('|') && raw.includes('---');
+    if (!hasTableSyntax) {
+      return res.status(500).json({
+        error: '⚠️ Invalid comparison data received.',
+        debug: raw
+      });
+    }
+
+    res.json({ table: raw });
+
+  } catch (error) {
+    console.error('❌ Course Comparison Error:', error?.response?.data || error.message);
+    res.status(500).json({ error: 'Failed to fetch course comparison from AI.' });
+  }
+});
+
+app.post('/api/generate-resume', async (req, res) => {
+  const {
+    name,
+    email,
+    phone,
+    education,
+    skills,
+    experience,
+    projects,
+    summary,
+  } = req.body;
+
+  const prompt = `
+Use the following user details to generate a clean, ATS-friendly resume in professional tone and markdown format.
+
+Full Name: ${name}
+Email: ${email}
+Phone: ${phone}
+Summary: ${summary}
+Education: ${education}
+Skills: ${skills}
+Experience: ${experience}
+Projects: ${projects}
+
+Return only the resume in markdown format. No introduction or explanation.
+`;
+
+  try {
+    const response = await axios.post(
+      'https://openrouter.ai/api/v1/chat/completions',
+      {
+        model: 'anthropic/claude-3-haiku',
+        messages: [{ role: 'user', content: prompt }]
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        timeout: 30000,
+      }
+    );
+
+    const aiReply = response.data.choices?.[0]?.message?.content?.trim();
+
+    if (!aiReply) {
+      return res.status(500).json({ error: 'Empty response from OpenRouter.' });
+    }
+
+    res.json({ resume: aiReply });
+  } catch (err) {
+    console.error('Resume Generation Error:', err.response?.data || err.message);
+    res.status(500).json({ error: 'Failed to generate resume from AI.' });
+  }
+});
+
 
 
 // ✅ Start the server

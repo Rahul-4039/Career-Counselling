@@ -16,6 +16,7 @@ const Chat = () => {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));
   const [showPremiumPopup, setShowPremiumPopup] = useState(false);
   const messagesEndRef = useRef(null);
+  
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

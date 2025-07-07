@@ -29,7 +29,7 @@ const CareerCard = ({ career, onGetRoadmap }) => (
 
 export default function CareerPage() {
   const [search, setSearch] = useState("");
- const [careers, setCareers] = useState([]);
+  const [careers, setCareers] = useState([]);
   const [category, setCategory] = useState("All");
   const [selectedCareer, setSelectedCareer] = useState(null);
   const [showPremiumPopup, setShowPremiumPopup] = useState(false);

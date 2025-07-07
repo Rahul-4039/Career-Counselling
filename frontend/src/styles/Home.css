@@ -48,6 +48,7 @@ a {
 .hero-buttons {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 15px;
   flex-wrap: wrap;
 }
@@ -72,15 +73,17 @@ a {
 }
 
 .btn-secondary {
-  border: 2px solid #00d4ff;
-  color: #00d4ff;
-  background-color: transparent;
-  margin-top: 2px;
-  height: 10px;
+  display: flex;
+  color: black;
+  background-color: white;
+  height: 17px;
+  border-radius: 10px;
+  align-items: center;
+  text-align: center;
 }
 
 .btn-secondary:hover {
-  background-color: rgba(0, 212, 255, 0.1);
+  background-color: rgb(214, 217, 217);
 }
 
 /* Section Layout */

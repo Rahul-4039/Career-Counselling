@@ -76,7 +76,7 @@ const TopColleges = () => {
             disabled={loading}
           >
             <span className="icon-container">
-              <span className="search-icon">🔍</span>
+              {/* <span className="search-icon">🔍</span> */}
             </span>
             {loading ? 'Searching...' : 'Find Colleges'}
           </button>

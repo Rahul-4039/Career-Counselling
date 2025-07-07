@@ -1,10 +1,9 @@
 // src/App.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { fetchCareers } from './api';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-
 import Home from './pages/Home';
 import Chat from './pages/Chat';
 import InterestForm from './pages/InterestForm';
@@ -17,10 +16,15 @@ import VerifyOtp from './pages/VerifyOtp';
 import PremiumPlans from './components/PremiumPlans';
 import CollegesByLocation from './pages/CollegesByLocation';
 import Profile from './pages/Profile';
-
 import PrivateRoute from './routes/PrivateRoute';
+import Services from './pages/ServicesPage';
+import CareerCompare from './pages/CareerCompare';
+import ResumeBuilder from './pages/ResumeBuilder';
+
 
 // ✅ Component to handle layout logic
+const API = process.env.REACT_APP_API_URL;
+
 const Layout = () => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
@@ -43,6 +47,9 @@ const Layout = () => {
           <Route path="/pricing" element={<PremiumPlans />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<Navigate to="/" />} />
+          <Route path="/services" element={<PrivateRoute><Services /></PrivateRoute>} />
+          <Route path="/compare" element={<PrivateRoute><CareerCompare /></PrivateRoute>}/>
+          <Route path="/resume-builder" element={<ResumeBuilder/>}/>
         </Routes>
       </main>
       {isHomePage && <Footer />}
