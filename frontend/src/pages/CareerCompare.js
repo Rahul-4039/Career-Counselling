@@ -22,7 +22,7 @@ const CareerCompare = () => {
         setError('');
 
         try {
-            const res = await axios.post('http://localhost:5000/api/compare-courses', {
+            const res = await axios.post(`${process.env.REACT_APP_API_URL}/api/compare-courses`, {
                 course1,
                 course2,
             });
