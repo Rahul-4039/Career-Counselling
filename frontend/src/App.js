@@ -20,7 +20,9 @@ import PrivateRoute from './routes/PrivateRoute';
 import Services from './pages/ServicesPage';
 import CareerCompare from './pages/CareerCompare';
 import ResumeBuilder from './pages/ResumeBuilder';
-
+import QrPopup from './components/QrPopup';
+import AdminDashboard from './pages/AdminDashboard';
+import UploadReceipt from './components/UploadReceipt';
 
 // ✅ Component to handle layout logic
 const API = process.env.REACT_APP_API_URL;
@@ -50,6 +52,11 @@ const Layout = () => {
           <Route path="/services" element={<PrivateRoute><Services /></PrivateRoute>} />
           <Route path="/compare" element={<PrivateRoute><CareerCompare /></PrivateRoute>}/>
           <Route path="/resume-builder" element={<ResumeBuilder/>}/>
+          <Route path="/qr-popup" element={<QrPopup/>}/>
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/upload-receipt" element={<UploadReceipt />} />
+          
+
         </Routes>
       </main>
       {isHomePage && <Footer />}
