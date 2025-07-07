@@ -20,7 +20,8 @@ app.use(cors(
   {
   origin: 'https://career-counselling-xi.vercel.app',
   credentials: true
-}));
+}
+));
 
 
 

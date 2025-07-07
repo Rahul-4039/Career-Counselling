@@ -261,6 +261,6 @@
 
 @media screen and (max-width: 768px){
     .interest-grid {
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
     }
 }

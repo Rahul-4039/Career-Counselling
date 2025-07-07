@@ -46,7 +46,7 @@ const Navbar = () => {
         {user && <li><NavLink to="/careerDetail">Careers</NavLink></li>}
         {user && <li><NavLink to="/consult">Consultants</NavLink></li>}
         {user && <li><NavLink to="/college">Top College</NavLink></li>}
-        {user && <li><NavLink to="/services">Services</NavLink></li>} 
+        {user && <li><NavLink to="/services">Services</NavLink></li>}
       </ul>
 
       {/* Desktop Profile */}
@@ -91,24 +91,50 @@ const Navbar = () => {
             {user && <li><NavLink to="/college" onClick={() => setMobileMenuOpen(false)}>Top College</NavLink></li>}
             {user && <li><NavLink to="/services" onClick={() => setMobileMenuOpen(false)}>Services</NavLink></li>}
 
-            {user && (
-              <li className="mobile-profile" onClick={() => setMobileProfileOpen(!mobileProfileOpen)}>
-                👤 Profile
+            {user ? (
+              <div className="mobile-profile" ref={profileRef}>
+                <li onClick={() => setMobileProfileOpen(!mobileProfileOpen)}>Profile</li>
                 {mobileProfileOpen && (
-                  <ul className="mobile-submenu">
-                    <li onClick={() => { navigate('/profile'); setMobileMenuOpen(false); }}>See Profile</li>
-                    <li onClick={handleLogout}>Logout</li>
-                  </ul>
+                  <div className="mobile-submenu">
+                    <li
+                      onClick={() => {
+                        navigate('/profile');
+                        setMobileMenuOpen(false);
+                        setMobileProfileOpen(false);
+                      }}
+                    >
+                      👤 See Profile
+                    </li>
+                    <li
+                      onClick={() => {
+                        handleLogout();
+                        setMobileProfileOpen(false);
+                      }}
+                    >
+                      🚪 Logout
+                    </li>
+                  </div>
                 )}
-              </li>
+              </div>
+            ) : (
+              <div className="mobile-profile">
+                <NavLink
+                  to="/login"
+                  className="auth-button"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Login
+                </NavLink>
+                <NavLink
+                  to="/register"
+                  className="auth-button register"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Register
+                </NavLink>
+              </div>
             )}
 
-            {!user && (
-              <>
-                <li><NavLink to="/login" onClick={() => setMobileMenuOpen(false)}>Login</NavLink></li>
-                <li><NavLink to="/register" onClick={() => setMobileMenuOpen(false)}>Register</NavLink></li>
-              </>
-            )}
           </ul>
         </div>
       )}

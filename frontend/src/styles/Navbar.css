@@ -127,7 +127,7 @@
     right: 0;
     width: 50%;
     background: #004080;
-    z-index: 9;
+    z-index: 999;
     border-top: 1px solid #ddd;
     padding: 10px 0;
   }
@@ -173,6 +173,19 @@
   .mobile-submenu li {
     padding: 8px 10px;
     color: white;
-    z-index: 9;
+    /* z-index: 9; */
+  }
+
+  .auth-button {
+  margin-left: 10px;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  background: transparent;
+  color: white;
+}
+
+  .auth-button.register {
+    background: transparent;
   }
 }
